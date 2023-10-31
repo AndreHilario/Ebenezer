@@ -1,0 +1,57 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum MusicCategory {
+  GUITAR_ONE
+  GUITAR_TWO
+  GUITAR
+  BASS
+  DRUMS
+  PIANO
+  VOICE_ONE
+  VOICE_TWO
+  VOICE_THREE
+}
+
+enum MusicShift {
+  EBD
+  CULT
+}
+
+enum ScaleType {
+  MUSIC
+}
+
+model Music {
+  id             Int           @id @default(autoincrement())
+  member         String
+  music_category MusicCategory
+  shift          MusicShift
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  scales Scale[]
+
+  @@map("music")
+}
+
+model Scale {
+  id        Int       @id @default(autoincrement())
+  date      DateTime
+  type      ScaleType
+  musicId   Int?
+  member    Music?     @relation(fields: [musicId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@map("scales")
+}
