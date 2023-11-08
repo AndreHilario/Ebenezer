@@ -22,8 +22,7 @@ export class MusicService {
     const musician = await this.musicRepository.findMusicianByName(member);
     if (!musician) throw new NotFoundException('Member not found!');
 
-    //buscar todas as escalas relacionadas ao membro pelo memberId
-    //retornar elas
+    return musician;
   }
 
   async remove(id: number) {
